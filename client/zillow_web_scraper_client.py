@@ -58,7 +58,11 @@ def getHeaders():
 
 def search_zillow(request_url, xpath):
     session_requests = requests.session()
-    response = session_requests.get(request_url, headers=getHeaders())
+    try:
+        response = session_requests.get(request_url, headers=getHeaders())
+    except Exception:
+        print "feeder error"
+        return None
     tree = html.fromstring(response.content)
     return tree.xpath(xpath)
 
@@ -66,31 +70,39 @@ def search_zillow(request_url, xpath):
 def search_zillow_by_zip(zipcode):
     request_url = '%s/%s' % (build_url(URL, SEARCH_FOR_SALE_PATH), str(zipcode))
     raw_result = search_zillow(request_url, SEARCH_XPATH_FOR_ZPID)
-    return [x.replace('zpid_', '') for x in raw_result]
-
+    if raw_result is not None:
+        return [x.replace('zpid_', '') for x in raw_result]
+    else:
+        return None
 """ Search properties by city and state """
 def search_zillow_by_city_state(city, state):
     city_state = pathname2url('%s %s' % (city, state))
     request_url = '%s/%s' % (build_url(URL, SEARCH_FOR_SALE_PATH), city_state)
     raw_result =  search_zillow(request_url, SEARCH_XPATH_FOR_ZPID)
-    return [x.replace('zpid_', '') for x in raw_result]
-
+    if raw_result is not None:
+        return [x.replace('zpid_', '') for x in raw_result]
+    else:
+        return None
 """ Get Similar homes for sale """
 def get_similar_homes_for_sale_by_id(zpid):
     request_url = '%s/%s_zpid' % (build_url(URL, GET_SIMILAR_HOMES_FOR_SALE_PATH), str(zpid))
     raw_result = search_zillow(request_url, GET_SIMILAR_HOMES_FOR_SALE_XPATH)
-    return [re.search(SIMILAR_HOMES_ZPID_REGEX_PATTERN, x).group(1) for x in raw_result]
+    if raw_result is not None:
+        return [re.search(SIMILAR_HOMES_ZPID_REGEX_PATTERN, x).group(1) for x in raw_result]
+    else:
+        return None
 
 """ Get property information by Zillow Property ID (zpid) """
 def get_property_by_zpid(zpid):
     request_url = '%s/%s_zpid' % (build_url(URL, GET_PROPERTY_BY_ZPID_PATH), str(zpid))
     session_requests = requests.session()
-    response = session_requests.get(request_url, headers=getHeaders())
     try:
-        tree = html.fromstring(response.content)
+        response = session_requests.get(request_url, headers=getHeaders())
     except Exception:
+        print "errorororoororor"
         return {}
 
+    tree = html.fromstring(response.content)
     # Street address
     street_address = None
     try:
