@@ -45,7 +45,7 @@ def getUpdatedPropertyDetails(zpid):
     response = requests.get(build_url(GET_UPDATED_PROPERTY_DETAILS_API_NAME), params=payload)
     res_json = loads(dumps(bf.data(fromstring(response.text))))
 
-    # TODO: extract ino from response
+
     return res_json
 
 """ Doc: http://www.zillow.com/howto/api/GetComps.htm """
