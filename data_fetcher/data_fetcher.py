@@ -15,9 +15,9 @@ CLOUD_AMQP_URL = 'amqp://dginpavm:rF4k66V_6V7kH3hhzpe7epAALlukODjs@donkey.rmq.cl
 DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
 
 # mongodb config
-PROPERTY_TABLE_NAME = 'property'
+PROPERTY_TABLE_NAME = 'property_test'
 
-FETCH_SIMILAR_PROPERTIES = False
+FETCH_SIMILAR_PROPERTIES = True
 
 SECONDS_IN_ONE_DAY = 3600 * 24
 SECONDS_IN_ONE_WEEK = SECONDS_IN_ONE_DAY * 7
@@ -68,5 +68,5 @@ while True:
         msg = cloudAMQP_client.getDataFetcherTask()
         if msg is not None:
             handle_message(msg)
-        # time.sleep(WAITING_TIME)
+        time.sleep(WAITING_TIME)
 

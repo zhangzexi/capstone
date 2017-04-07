@@ -6,9 +6,9 @@ from decimal import Decimal
 from lxml import html
 from re import sub
 from urllib import pathname2url
-
+import pandas as pd
 URL = '''http://www.zillow.com'''
-SEARCH_FOR_SALE_PATH = '''homes/for_sale'''
+SEARCH_FOR_SALE_PATH = '''homes/recently_sold'''
 GET_PROPERTY_BY_ZPID_PATH = '''homes'''
 GET_SIMILAR_HOMES_FOR_SALE_PATH = '''homedetails'''
 IMAGE_URL_REGEX_PATTERN = '"z_listing_image_url":"([^"]+)",'
@@ -99,7 +99,7 @@ def get_property_by_zpid(zpid):
     try:
         response = session_requests.get(request_url, headers=getHeaders())
     except Exception:
-        print "errorororoororor"
+        print "get_p_by_zpid error"
         return {}
 
     tree = html.fromstring(response.content)
@@ -244,9 +244,18 @@ def get_property_by_zpid(zpid):
 """Get properties' information by zipcode"""
 def get_properties_by_zip(zipcode):
     zpids = search_zillow_by_zip(zipcode)
-    return [get_property_by_zpid(zpid) for zpid in zpids]
-
+    if zpids is not None:
+        return [get_property_by_zpid(zpid) for zpid in zpids]
+    else:
+        return None
 """Get properties' information by city and state"""
 def get_properties_by_city_state(city, state):
     zpids = search_zillow_by_city_state(city, state)
     return [get_property_by_zpid(zpid) for zpid in zpids]
+
+# def ready_for_concat(dict):
+#     series = pd.Series(dict)
+#     df2 = pd.DataFrame()
+#     df2 = pd.concat([df2,series])
+#     df2 = df2.T
+#     return df2
