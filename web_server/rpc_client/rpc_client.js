@@ -1,4 +1,4 @@
-var jayson = require('jayson');
+    var jayson = require('jayson');
 
 // create a client connnected to backend server
 var client = jayson.client.http({
