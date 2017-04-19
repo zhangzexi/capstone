@@ -15,7 +15,7 @@ CLOUD_AMQP_URL = 'amqp://dginpavm:rF4k66V_6V7kH3hhzpe7epAALlukODjs@donkey.rmq.cl
 DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
 
 # mongodb config
-PROPERTY_TABLE_NAME = 'property_test'
+PROPERTY_TABLE_NAME = 'property_zestimate_facts'
 
 FETCH_SIMILAR_PROPERTIES = True
 

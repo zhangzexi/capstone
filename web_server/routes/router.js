@@ -5,12 +5,35 @@ var User = require('../model/user');
 var rpc_client = require('../rpc_client/rpc_client');
 var router = express.Router();
 
-TITLE = 'Smart Zillow';
+TITLE = 'capstone';
 
 /* Index page */
 router.get('/', function(req, res, next) {
   var user = checkLoggedIn(req, res)
   res.render('index', { title: TITLE, logged_in_user: user });
+});
+/*testing estimation*/
+router.get('/estimator', function(req, res, next) {
+
+  res.render('estimator', { title: TITLE });
+});
+
+router.get('/estimation_summary', function(req, res, next) {
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+  var address = req.query.address
+
+  res.render('estimation_summary', {
+        title: TITLE,
+        address: address,
+
+         });
 });
 
 /* Search page */
@@ -153,6 +176,7 @@ router.get('/logout', function(req, res) {
   req.session.reset();
   res.redirect('/');
 });
+
 
 function checkLoggedIn(req, res) {
   // Check if session exist

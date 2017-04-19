@@ -1,0 +1,25 @@
+html
+  head
+    title
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+  body
+    .navbar.navbar-fixed-top(role='navigation')
+      .container-fluid
+        .nav.navbar-right
+          form#login(metdho='get', action='/login')
+            input.btn.navbar-btn(value='Sign in', type='submit', style='margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;')
+    div(style='margin-top: 10%')
+      img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
+      br
+      br
+      br
+      .container
+        form#search(method='get', action='/search')
+          .row
+            .col-md-1
+            .col-md-10
+              .well
+                legend Property Summary:
+                p address : #{address}
+

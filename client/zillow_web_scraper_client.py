@@ -32,7 +32,9 @@ GET_SIMILAR_HOMES_FOR_SALE_XPATH = '''//ol[@id='fscomps']/li/div[@class='zsg-med
 GET_K5_SCHOOLRATING_XPATH = '''//*[@id="nearbySchools"]/div/div[3]/ul/li[2]/div[1]/span/text()'''
 GET_6TO8_SCHOOLRATING_XPATH = '''//*[@id="nearbySchools"]/div/div[3]/ul/li[3]/div[1]/span/text()'''
 GET_9TO12_SCHOOLRATING_XPATH ='''//*[@id="nearbySchools"]/div/div[3]/ul/li[4]/div[1]/span/text()'''
+GET_INFO_XPATH_FOR_ZESTIMATE = '''//*[@id="home-value-wrapper"]/div[1]/div[3]/span[2]/text()'''
 
+GET_INFO_XPATH_FOR_FACTS_NEW = '''//*[@class="zsg-sm-1-1 hdp-fact-list"]/li/span/text()'''
 # Load user agents
 USER_AGENTS_FILE = '../client/user_agents.txt'
 USER_AGENTS = []
@@ -91,6 +93,55 @@ def get_similar_homes_for_sale_by_id(zpid):
         return [re.search(SIMILAR_HOMES_ZPID_REGEX_PATTERN, x).group(1) for x in raw_result]
     else:
         return None
+
+##handle lotsize in facts
+
+def lotsize_fact(facts):
+    lot_size = 0
+    for i in range(len(facts)):
+        if "Lot:" in facts[i]:
+            lot_index = facts[i].index("Lot:")
+            lot_count = 0
+            lot_length = 0
+            for char in facts[i][lot_index:]:
+                if char != "'":
+                    lot_count += 1
+                else:
+                    lot_length = lot_count + lot_index
+                    break
+
+            lot = facts[i][lot_index:lot_length]
+            if "sqft" in lot:
+                if "," in lot:
+                    lot_split = lot.split()[-2].split(",")
+                    lot_value = ""
+                    for n in lot_split:
+                        lot_value += n
+                else:
+                    lot_value = lot.split()[-2]
+                lot_size = float(lot_value)
+                return lot_size
+            if "acre" in lot:
+                if "," in lot:
+                    lot_split = lot.split()[-2].split(",")
+                    lot_value = ""
+                    for n in lot_split:
+                        lot_value += n
+                    lot_value = float(lot_value)
+                    if lot_value > 1000:
+                        lot_size = float(lot_value)
+                        return lot_size
+                    else:
+                        lot_value = lot_value * 43560
+                        lot_size = float(lot_value)
+                        return lot_size
+                else:
+                    lot_value = float(lot.split()[-2]) * 43560
+                    lot_size = float(lot_value)
+                    return lot_size
+
+        else:
+            return lot_size
 
 """ Get property information by Zillow Property ID (zpid) """
 def get_property_by_zpid(zpid):
@@ -172,7 +223,7 @@ def get_property_by_zpid(zpid):
     try:
         latitude = float(tree.xpath(GET_INFO_XPATH_FOR_LATITUDE)[0])
         longitude = float(tree.xpath(GET_INFO_XPATH_FOR_LONGITUDE)[0])
-        geohash = Geohash.encode(latitude,longitude)
+        geohash = Geohash.encode(latitude,longitude,precision=6)
     except Exception:
         pass
 
@@ -194,8 +245,10 @@ def get_property_by_zpid(zpid):
 
     # Basic facts
     facts = None
+    lotsize = None
     try:
         facts = tree.xpath(GET_INFO_XPATH_FOR_FACTS)
+        lotsize = lotsize_fact(facts)
     except Exception:
         pass
 
@@ -217,8 +270,24 @@ def get_property_by_zpid(zpid):
     except Exception:
         pass
 
+    #zEstimate
+    zestimate = None
+    try:
+        zestimate_raw = tree.xpath(GET_INFO_XPATH_FOR_ZESTIMATE)
+        if len(zestimate_raw) > 0:
+            zestimate = float(zestimate_raw[0].replace(',', '').strip(' $'))
+    except Exception:
+        pass
 
-    return {'zpid' : zpid,
+    #facts
+    facts = None
+    try :
+        facts = tree.xpath(GET_INFO_XPATH_FOR_FACTS_NEW)
+    except Exception:
+        pass
+
+    return {
+            'zpid' : zpid,
             'street_address' : street_address,
             'city' : city,
             'state' : state,
@@ -234,11 +303,13 @@ def get_property_by_zpid(zpid):
             'list_price' : list_price,
             'image_url' : image_url,
             'description' : description,
-            'facts' : facts,
-            'additional_facts' : additional_facts,
+            # 'facts' : facts,
+            # 'additional_facts' : additional_facts,
             'school_ratingE' : schoolratingE,
             'school_ratingM': schoolratingM,
-            'school_ratingH': schoolratingH
+            'school_ratingH': schoolratingH,
+            'facts': facts,
+            'zestimate': zestimate
             }
 
 """Get properties' information by zipcode"""
