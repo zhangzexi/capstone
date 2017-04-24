@@ -105,3 +105,7 @@ def findProperyByZipcode(zipcode):
     db = mongodb_client.getDB()
     properties = list(db[PROPERTY_TABLE_NAME].find({'zipcode': zipcode, 'is_for_sale': True}))
     return [x['zpid'] for x in properties]
+
+"""getEstimation based on factors"""
+def getEstimation(query):
+    return str(query)

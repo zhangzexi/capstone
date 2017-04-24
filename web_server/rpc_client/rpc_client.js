@@ -60,11 +60,23 @@ function getDetailsByZpid(zpid, callback) {
     });
 }
 
+//Get estimation by all factors
+function getEstimation(query,callback){
+    client.request('getEstimation', [query], function(err, error, response) {
+        if (err) throw err;
+        console.log("!!!!!!" + query);
+        console.log(response);
+        callback(response);
+    });
+}
+//
+
 module.exports = {
     add : add,
     searchByAddress : searchByAddress,
     searchAreaByZip : searchAreaByZip,
     searchAreaByCityState : searchAreaByCityState,
     searchArea : searchArea,
-    getDetailsByZpid : getDetailsByZpid
+    getDetailsByZpid : getDetailsByZpid,
+    getEstimation : getEstimation,
 };

@@ -4,7 +4,19 @@ var session = require('client-sessions');
 var User = require('../model/user');
 var rpc_client = require('../rpc_client/rpc_client');
 var router = express.Router();
+var Geohash = require('latlon-geohash');
+var NodeGeocoder = require('node-geocoder');
 
+//google geocoder api initialization
+var options = {
+  provider: 'google',
+
+  // Optional depending on the providers
+  httpAdapter: 'https', // Default
+  apiKey: 'AIzaSyDpZGZWXqyRWeBvLjmMf5LxC3kvGE7nXMc', // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
+var geocoder = NodeGeocoder(options);
 TITLE = 'capstone';
 
 /* Index page */
@@ -19,21 +31,28 @@ router.get('/estimator', function(req, res, next) {
 });
 
 router.get('/estimation_summary', function(req, res, next) {
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
-  var address = req.query.address
 
-  res.render('estimation_summary', {
+
+  geocoder.geocode(req.query.address, function(err, resp) {
+    var gh = Geohash.encode(resp[0].latitude,resp[0].longitude, [5]);
+    var query = {"address" : req.query.address, "ptype" : req.query.ptype, "geohash" : gh}
+    console.log(query)
+    rpc_client.getEstimation(query, function(response) {
+
+            console.log("inside rpc : " + query.geohash)
+            console.log("rpc working")
+            console.log(response)
+
+    });
+    res.render('estimation_summary', {
         title: TITLE,
-        address: address,
+        address: query.address,
+        ptype:query.ptype
 
          });
+  });
+
+
 });
 
 /* Search page */
@@ -211,6 +230,15 @@ function numberWithCommas(x) {
   if (x != null) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+}
+
+//function addressToGeohash(address){
+//    geocoder.geocode(address, function(err, res) {
+//    var gh = Geohash.encode(res[0].latitude,res[0].longitude, [5]);
+//    console.log("inside: " + gh);
+//    return gh
+//
+//  });
 }
 
 module.exports = router;

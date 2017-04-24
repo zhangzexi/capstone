@@ -50,6 +50,12 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
         print "getDetailsByZillowId() gets called with zpid=[%s] and get_prediction=[%s]" % (str(zpid), str(get_prediction))
         return operations.getDetailsByZpid(zpid, get_prediction)
 
+    """get estimation by factors"""
+    @pyjsonrpc.rpcmethod
+    def getEstimation(self, query):
+        print "getEstimation gets called with query=[%s]" % (
+        str(query))
+        return operations.getEstimation(query)
 
 # Threading HTTP-Server
 http_server = pyjsonrpc.ThreadingHttpServer(
