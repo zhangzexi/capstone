@@ -35,7 +35,25 @@ router.get('/estimation_summary', function(req, res, next) {
 
   geocoder.geocode(req.query.address, function(err, resp) {
     var gh = Geohash.encode(resp[0].latitude,resp[0].longitude, [5]);
-    var query = {"address" : req.query.address, "ptype" : req.query.ptype, "geohash" : gh}
+    var query = {
+        "address" : req.query.address,
+        "ptype" : req.query.ptype,
+        "geohash" : gh,
+        "floor_size" : req.query.floor_size,
+        "lot_size" : req.query.lot_size,
+        "bedr" : req.query.bedr,
+        "bathr" : req.query.bathr,
+        "es" : req.query.es,
+        "ms" : req.query.ms,
+        "hs" : req.query.hs,
+        "new_floor_size" : req.query.new_floor_size,
+        "new_lot_size" : req.query.new_lot_size,
+        "new_bedr" : req.query.new_bedr,
+        "new_bathr" : req.query.new_bathr,
+        "new_es" : req.query.new_es,
+        "new_ms" : req.query.new_ms,
+        "new_hs" : req.query.new_hs
+        }
     console.log(query)
     rpc_client.getEstimation(query, function(response) {
 
@@ -47,8 +65,22 @@ router.get('/estimation_summary', function(req, res, next) {
     res.render('estimation_summary', {
         title: TITLE,
         address: query.address,
-        ptype:query.ptype
-
+        ptype: query.ptype,
+        geohash : query.geohash,
+        floor_size : query.floor_size,
+        lot_size : query.lot_size,
+        bedr : query.bedr,
+        bathr : query.bathr,
+        es : query.es,
+        ms : query.ms,
+        hs : query.hs,
+        new_floor_size : query.new_floor_size,
+        new_lot_size : query.new_lot_size,
+        new_bedr : query.new_bedr,
+        new_bathr : query.new_bathr,
+        new_es : query.new_es,
+        new_ms : query.new_ms,
+        new_hs : query.new_hs
          });
   });
 
@@ -239,6 +271,6 @@ function numberWithCommas(x) {
 //    return gh
 //
 //  });
-}
+
 
 module.exports = router;
