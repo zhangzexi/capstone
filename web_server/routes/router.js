@@ -128,16 +128,16 @@ router.get('/detail', function(req, res, next) {
     }
 
     // Handle predicted value
-    var predicted_value = parseInt(property['predicted_value']);
+    //var predicted_value = parseInt(property['predicted_value']);
     var list_price = parseInt(property['list_price']);
-    property['predicted_change'] = ((predicted_value - list_price) / list_price * 100).toFixed(2);
+    //property['predicted_change'] = ((predicted_value - list_price) / list_price * 100).toFixed(2);
 
     // Add thousands separators for numbers.
     addThousandSeparator(property);
 
     // Split facts and additional facts
-    splitFacts(property, 'facts');
-    splitFacts(property, 'additional_facts');
+    //splitFacts(property, 'facts');
+    //splitFacts(property, 'additional_facts');
 
 
     res.render('detail', 
