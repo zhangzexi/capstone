@@ -1,9 +1,6 @@
 import json
 import pika
 
-import json
-import pika
-
 class CloudAMQPClient:
     def __init__(self, cloud_amqp_url, queue_name):
         self.cloud_amqp_url = cloud_amqp_url

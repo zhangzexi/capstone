@@ -3,10 +3,11 @@ import pandas
 import pyjsonrpc
 import tensorflow as tf
 import time
-
 from ml_common import *
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import simplejson as json
+##from bson.json_util import dumps
 
 SERVER_HOST = 'localhost'
 SERVER_PORT = 5050
@@ -33,19 +34,29 @@ class ReloadModelHandler(FileSystemEventHandler):
 class RequestHandler(pyjsonrpc.HttpRequestHandler):
     """Test method"""
     @pyjsonrpc.rpcmethod
-    def predict(self, zipcode, property_type, bedroom, bathroom, size):
+    def predict(self, property_type, bedroom, bathroom, geohash, school_ratingE, school_ratingH, school_ratingM, size, zestimate, lotsize):
         sample = pandas.DataFrame({
-            'zipcode': zipcode,
             'property_type': property_type,
             'bedroom': bedroom,
             'bathroom': bathroom,
-            'size': size, 
-            'list_price':0}, index=[0])
+            'geohash': geohash,
+            'school_ratingE': school_ratingE,
+            'school_ratingH': school_ratingH,
+            'school_ratingM': school_ratingM,
+            'size': size,
+            'zestimate': zestimate,
+            'lotsize': lotsize,
+            'list_price': 0
+            }, index=[0])
         def input_fn_predict():
             return input_fn(sample)
         prediction = linear_regressor.predict(input_fn=input_fn_predict)
-        print prediction
-        return prediction[0].item()
+        prediction_value = str(list(prediction)[0])
+
+        print prediction_value
+        return prediction_value
+
+
 
 # Setup watchdog
 observer = Observer()

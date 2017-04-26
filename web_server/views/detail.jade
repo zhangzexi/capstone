@@ -41,26 +41,26 @@ block content
       td(style="padding-left: 50px; width: 600px;")
         br
         b Facts
-    tr
-      td(style="padding-left: 50px; width: 600px;")
-        table
-          for fact_group in property.facts
-            td(style="width: 30%;" valign="top")
-              ul
-                for fact in fact_group
-                  li= fact
+    //tr
+    //  td(style="padding-left: 50px; width: 600px;")
+    //    table
+    //      for fact_group in property.facts
+    //        td(style="width: 30%;" valign="top")
+    //          ul
+    //            for fact in fact_group
+    //              li= fact
     tr
       td(style="padding-left: 50px; width: 600px;")
         br
         b Additional Facts
-    tr
-      td(style="padding-left: 50px; width: 600px;")
-        table
-          for additional_fact_group in property.additional_facts
-            td(style="width: 30%;" valign="top")
-              ul
-                for additional_fact in additional_fact_group
-                  li= additional_fact
+    //tr
+      //td(style="padding-left: 50px; width: 600px;")
+      //  table
+      //    for additional_fact_group in property.additional_facts
+      //      td(style="width: 30%;" valign="top")
+      //        ul
+      //          for additional_fact in additional_fact_group
+      //            li= additional_fact
 
   script.
     function loadMapScenario() {

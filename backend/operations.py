@@ -19,7 +19,7 @@ SERVER_HOST = 'localhost'
 SERVER_PORT = 4040
 
 # DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
-PROPERTY_TABLE_NAME = 'property'
+PROPERTY_TABLE_NAME = 'property_zes_facts'
 
 """Search a property with specific address and citystatezip"""
 def searchByAddress(address, citystatezip):
@@ -75,17 +75,24 @@ If get_predction is True, get value prediction from ml_prediction_service
 def getDetailsByZpid(zpid, get_prediction=False):
     db = mongodb_client.getDB()
     prop = json.loads(dumps(db[PROPERTY_TABLE_NAME].find_one({'zpid': zpid})))
-    if prop == None:
+    if prop == None or prop['zestimate'] == None:
         prop = zillow_web_scraper_client.get_property_by_zpid(zpid)
 
-    # Get prediction
+    ##Get prediction
     if get_prediction:
+        prop['lotsize'] = getLot(prop)
         predicted_value = ml_prediction_client.predict(
-            prop['zipcode'],
             prop['property_type'],
             prop['bedroom'],
             prop['bathroom'],
-            prop['size'])
+            prop['geohash'],
+            prop['school_ratingE'],
+            prop['school_ratingH'],
+            prop['school_ratingM'],
+            prop['size'],
+            prop['zestimate'],
+            prop['lotsize']
+        )
         prop['predicted_value'] = int(predicted_value)
     return prop
 
@@ -109,3 +116,27 @@ def findProperyByZipcode(zipcode):
 """getEstimation based on factors"""
 def getEstimation(query):
     return str(query)
+
+'''find lot size in facts'''
+def getLot(prop):
+    lotsize = []
+    for i in range(len(prop["facts"])):
+        count = 0
+        for j in range(len(prop["facts"][i])):
+            if "Lot:" in prop["facts"][i][j]:
+                temp = prop["facts"][i][j + 1].split()
+                if temp[1] == "sqft":
+                    res = temp[0].replace(",", "")
+                    lotsize.append(int(res))
+                if "acre" in temp[1]:
+                    res = float(temp[0].replace(",", ""))
+                    if res > 1000:
+                        lotsize.append(res)
+                    else:
+                        lotsize.append(res * 43560)
+
+                break
+            count += 1
+            if count + 1 == len(prop["facts"][i]):
+                lotsize.append(0)
+    return lotsize
