@@ -113,9 +113,37 @@ def findProperyByZipcode(zipcode):
     properties = list(db[PROPERTY_TABLE_NAME].find({'zipcode': zipcode, 'is_for_sale': True}))
     return [x['zpid'] for x in properties]
 
+
 """getEstimation based on factors"""
 def getEstimation(query):
-    return str(query)
+    estimations = []
+    current_predicted_value = ml_prediction_client.predict(
+        query["ptype"],
+        float(query["bedr"]),
+        float(query["bathr"]),
+        query["geohash"],
+        float(query["es"]),
+        float(query["ms"]),
+        float(query["hs"]),
+        float(query["floor_size"]),
+        1000000,
+        float(query["lot_size"]),)
+    new_predicted_value = ml_prediction_client.predict(
+        query["ptype"],
+        float(query["new_bedr"]),
+        float(query["new_bathr"]),
+        query["geohash"],
+        float(query["new_es"]),
+        float(query["new_ms"]),
+        float(query["new_hs"]),
+        float(query["new_floor_size"]),
+        1000000,
+        float(query["new_lot_size"]),
+        )
+
+    estimations.append(float(current_predicted_value))
+    estimations.append(float(new_predicted_value))
+    return json.loads(dumps(estimations))
 
 '''find lot size in facts'''
 def getLot(prop):

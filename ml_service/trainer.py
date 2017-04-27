@@ -97,18 +97,18 @@ print linear_regressor.evaluate(input_fn=input_fn_test, steps=np.float32(10))
 print "Model evaluation finished."
 
 
-print "Predicting model..."
-
-
-def input_fn_predict():
-    return input_fn(predict_features_label)
-
-prediction = linear_regressor.predict(input_fn=input_fn_predict)
-for i, p in enumerate(prediction):
-    print 'Prediction %s: %s' % (i + 1, p)
-
-print "Model prediction finished."
-
-print predict_features_label
+# print "Predicting model..."
+#
+#
+# def input_fn_predict():
+#     return input_fn(predict_features_label)
+#
+# prediction = linear_regressor.predict(input_fn=input_fn_predict)
+# for i, p in enumerate(prediction):
+#     print 'Prediction %s: %s' % (i + 1, p)
+#
+# print "Model prediction finished."
+#
+# print predict_features_label
 
 # tensorboard --logdir='logs/'

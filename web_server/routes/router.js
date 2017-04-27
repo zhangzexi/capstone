@@ -34,9 +34,10 @@ router.get('/estimation_summary', function(req, res, next) {
 
 
   geocoder.geocode(req.query.address, function(err, resp) {
+      console.log(resp)
     var gh = Geohash.encode(resp[0].latitude,resp[0].longitude, [5]);
     var query = {
-        "address" : req.query.address,
+        "address" : resp[0].formattedAddress,
         "ptype" : req.query.ptype,
         "geohash" : gh,
         "floor_size" : req.query.floor_size,
@@ -59,29 +60,33 @@ router.get('/estimation_summary', function(req, res, next) {
 
             console.log("inside rpc : " + query.geohash)
             console.log("rpc working")
-            console.log(response)
+            console.log("***" + response)
+            res.render('estimation_summary', {
+                title: TITLE,
+                address: query.address,
+                ptype: query.ptype,
+                geohash : query.geohash,
+                floor_size : query.floor_size,
+                lot_size : query.lot_size,
+                bedr : query.bedr,
+                bathr : query.bathr,
+                es : query.es,
+                ms : query.ms,
+                hs : query.hs,
+                new_floor_size : query.new_floor_size,
+                new_lot_size : query.new_lot_size,
+                new_bedr : query.new_bedr,
+                new_bathr : query.new_bathr,
+                new_es : query.new_es,
+                new_ms : query.new_ms,
+                new_hs : query.new_hs,
+                current_estimation : numberWithCommas(response[0]),
+                new_estimation : numberWithCommas(response[1]),
+                changes : ((response[1] - response[0]) / response[0] * 100).toFixed(2)
+                 });
 
     });
-    res.render('estimation_summary', {
-        title: TITLE,
-        address: query.address,
-        ptype: query.ptype,
-        geohash : query.geohash,
-        floor_size : query.floor_size,
-        lot_size : query.lot_size,
-        bedr : query.bedr,
-        bathr : query.bathr,
-        es : query.es,
-        ms : query.ms,
-        hs : query.hs,
-        new_floor_size : query.new_floor_size,
-        new_lot_size : query.new_lot_size,
-        new_bedr : query.new_bedr,
-        new_bathr : query.new_bathr,
-        new_es : query.new_es,
-        new_ms : query.new_ms,
-        new_hs : query.new_hs
-         });
+
   });
 
 
@@ -142,7 +147,7 @@ router.get('/detail', function(req, res, next) {
 
     res.render('detail', 
       {
-        title: 'Smart Zillow',
+        title: 'Capstone',
         query: '',
         logged_in_user: logged_in_user,
         property : property
