@@ -143,7 +143,8 @@ router.get('/detail', function(req, res, next) {
     // Split facts and additional facts
     //splitFacts(property, 'facts');
     //splitFacts(property, 'additional_facts');
-
+    console.log(property['facts'])
+    property['facts'] = splitFact(property['facts'])
 
     res.render('detail', 
       {
@@ -242,14 +243,14 @@ function checkLoggedIn(req, res) {
   return null;
 }
 
-function splitFacts(property, field_name) {
-  facts_groups = [];
-  group_size = property[field_name].length / 3;
-  facts_groups.push(property[field_name].slice(0, group_size));
-  facts_groups.push(property[field_name].slice(group_size, group_size + group_size));
-  facts_groups.push(property[field_name].slice(group_size + group_size));
-  property[field_name] = facts_groups;
-}
+// function splitFacts(property, field_name) {
+//   facts_groups = [];
+//   group_size = property[field_name].length / 3;
+//   facts_groups.push(property[field_name].slice(0, group_size));
+//   facts_groups.push(property[field_name].slice(group_size, group_size + group_size));
+//   facts_groups.push(property[field_name].slice(group_size + group_size));
+//   property[field_name] = facts_groups;
+// }
 
 function addThousandSeparatorForSearchResult(searchResult) {
   for (i = 0; i < searchResult.length; i++) {
@@ -277,5 +278,26 @@ function numberWithCommas(x) {
 //
 //  });
 
+function splitFact(fact){
+    var res = [];
+    for(var i=0;i<fact.length;i++){
+        if (fact[i].includes(":")){
+            var temp = fact[i];
+        }else{
+            temp += fact[i];
+            if (i + 1 != fact.length){
+                if (fact[i+1].includes(":")){
+                    res.push(temp);
+                }else{
+                    temp += ", ";
+                    continue;
+                }
+            }else{
+                res.push(temp);
+            }
+        }
+    }
+    return res;
+}
 
 module.exports = router;

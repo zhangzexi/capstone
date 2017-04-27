@@ -86,14 +86,20 @@ linear_regressor = tf.contrib.learn.LinearRegressor(
     optimizer=tf.train.AdamOptimizer(learning_rate=LEARNING_RATE),
     model_dir=MODEL_OUTPUT_DIR)
 
+linear_regressor_woz = tf.contrib.learn.LinearRegressor(
+    feature_columns=feature_columns_wo_z,
+    optimizer=tf.train.AdamOptimizer(learning_rate=LEARNING_RATE),
+    model_dir=MODEL_OUTPUT_DIR_WO_Z)
 print "Training model..."
 
 
 def input_fn_train():
     return input_fn(train_features_label)
-
+def input_fn_train_woz():
+    return input_fn(train_features_label_woz)
 
 linear_regressor.fit(input_fn=input_fn_train, steps=np.float32(STEPS))
+linear_regressor_woz.fit(input_fn=input_fn_train_woz, steps=np.float32(STEPS))
 
 print "Model training finished."
 
@@ -102,8 +108,11 @@ print "Evaluating model..."
 
 def input_fn_test():
     return input_fn(test_features_label)
+def input_fn_test_woz():
+    return input_fn(test_features_label_woz)
 
 print linear_regressor.evaluate(input_fn=input_fn_test, steps=np.float32(10))
+print linear_regressor_woz.evaluate(input_fn=input_fn_test_woz, steps=np.float32(10))
 
 print "Model evaluation finished."
 

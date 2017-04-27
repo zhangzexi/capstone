@@ -16,19 +16,8 @@ COLUMNS_WO_Z = ['index', 'bathroom', 'bedroom', 'city', 'geohash', 'list_price',
 # input_fn return format: (feature_columns, label)
 # feature_columns: {column_name : tf.constant}
 # label: tf.constant
-def input_fn(df):
-    continuous_cols = {k: tf.constant(df[k].values, shape=[df[k].size, 1]) for k in CONTINUOUS_COLUMNS}
-    categorical_cols = {k: tf.SparseTensor(
-        indices=[[i, 0] for i in range(df[k].size)],
-        values=df[k].values,
-        dense_shape=[df[k].size, 1])
-            for k in CATEGORICAL_COLUMNS}
-    feature_columns = dict(continuous_cols.items() + categorical_cols.items())
-    label = tf.constant(df[LABEL_COLUMN].values)
-    return feature_columns, label
-
 # def input_fn(df):
-#     continuous_cols = {k: tf.constant(df[k].values) for k in CONTINUOUS_COLUMNS}
+#     continuous_cols = {k: tf.constant(df[k].values, shape=[df[k].size, 1]) for k in CONTINUOUS_COLUMNS}
 #     categorical_cols = {k: tf.SparseTensor(
 #         indices=[[i, 0] for i in range(df[k].size)],
 #         values=df[k].values,
@@ -37,6 +26,17 @@ def input_fn(df):
 #     feature_columns = dict(continuous_cols.items() + categorical_cols.items())
 #     label = tf.constant(df[LABEL_COLUMN].values)
 #     return feature_columns, label
+
+def input_fn(df):
+    continuous_cols = {k: tf.constant(df[k].values) for k in CONTINUOUS_COLUMNS}
+    categorical_cols = {k: tf.SparseTensor(
+        indices=[[i, 0] for i in range(df[k].size)],
+        values=df[k].values,
+        dense_shape=[df[k].size, 1])
+            for k in CATEGORICAL_COLUMNS}
+    feature_columns = dict(continuous_cols.items() + categorical_cols.items())
+    label = tf.constant(df[LABEL_COLUMN].values)
+    return feature_columns, label
 
 # Hanlding columns
 geohash = tf.contrib.layers.sparse_column_with_hash_bucket("geohash", hash_bucket_size=10000)

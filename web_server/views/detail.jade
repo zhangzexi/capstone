@@ -36,23 +36,15 @@ block content
 
     tr
       td(style="padding-left: 50px; width: 600px;")
+        br
+        Legend Description:
         p= property.description
     tr
       td(style="padding-left: 50px; width: 600px;")
         br
-        b Facts
-    //tr
-    //  td(style="padding-left: 50px; width: 600px;")
-    //    table
-    //      for fact_group in property.facts
-    //        td(style="width: 30%;" valign="top")
-    //          ul
-    //            for fact in fact_group
-    //              li= fact
-    tr
-      td(style="padding-left: 50px; width: 600px;")
-        br
-        b Additional Facts
+        Legend Facts:
+          for each in property.facts
+            p= each
     //tr
       //td(style="padding-left: 50px; width: 600px;")
       //  table

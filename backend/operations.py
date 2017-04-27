@@ -81,6 +81,7 @@ def getDetailsByZpid(zpid, get_prediction=False):
     ##Get prediction
     if get_prediction:
         prop['lotsize'] = getLot(prop)
+        print getLot(prop)
         predicted_value = ml_prediction_client.predict(
             prop['property_type'],
             prop['bedroom'],
@@ -93,7 +94,8 @@ def getDetailsByZpid(zpid, get_prediction=False):
             prop['zestimate'],
             prop['lotsize']
         )
-        prop['predicted_value'] = int(predicted_value)
+
+        prop['predicted_value'] = float(predicted_value)
     return prop
 
 """Update doc in db"""
@@ -117,7 +119,7 @@ def findProperyByZipcode(zipcode):
 """getEstimation based on factors"""
 def getEstimation(query):
     estimations = []
-    current_predicted_value = ml_prediction_client.predict(
+    current_predicted_value = ml_prediction_client.predictwoz(
         query["ptype"],
         float(query["bedr"]),
         float(query["bathr"]),
@@ -126,9 +128,8 @@ def getEstimation(query):
         float(query["ms"]),
         float(query["hs"]),
         float(query["floor_size"]),
-        1000000,
         float(query["lot_size"]),)
-    new_predicted_value = ml_prediction_client.predict(
+    new_predicted_value = ml_prediction_client.predictwoz(
         query["ptype"],
         float(query["new_bedr"]),
         float(query["new_bathr"]),
@@ -137,7 +138,6 @@ def getEstimation(query):
         float(query["new_ms"]),
         float(query["new_hs"]),
         float(query["new_floor_size"]),
-        1000000,
         float(query["new_lot_size"]),
         )
 
@@ -147,24 +147,23 @@ def getEstimation(query):
 
 '''find lot size in facts'''
 def getLot(prop):
-    lotsize = []
+    lotsize = 0
     for i in range(len(prop["facts"])):
         count = 0
-        for j in range(len(prop["facts"][i])):
-            if "Lot:" in prop["facts"][i][j]:
-                temp = prop["facts"][i][j + 1].split()
-                if temp[1] == "sqft":
-                    res = temp[0].replace(",", "")
-                    lotsize.append(int(res))
-                if "acre" in temp[1]:
-                    res = float(temp[0].replace(",", ""))
-                    if res > 1000:
-                        lotsize.append(res)
-                    else:
-                        lotsize.append(res * 43560)
+        if "Lot:" in prop["facts"][i]:
+            temp = prop["facts"][i+1].split()
+            if temp[1] == "sqft":
+                res = temp[0].replace(",", "")
+                lotsize=(int(res))
+            if "acre" in temp[1]:
+                res = float(temp[0].replace(",", ""))
+                if res > 1000:
+                    lotsize=res
+                else:
+                    lotsize=(res * 43560)
 
-                break
-            count += 1
-            if count + 1 == len(prop["facts"][i]):
-                lotsize.append(0)
+            break
+        count += 1
+        if count + 1 == len(prop["facts"]):
+            return 0
     return lotsize
