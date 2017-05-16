@@ -19,7 +19,7 @@ SERVER_HOST = 'localhost'
 SERVER_PORT = 4040
 
 # DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
-PROPERTY_TABLE_NAME = 'property_zes_facts'
+PROPERTY_TABLE_NAME = 'property_for_sale'
 
 """Search a property with specific address and citystatezip"""
 def searchByAddress(address, citystatezip):
@@ -96,6 +96,7 @@ def getDetailsByZpid(zpid, get_prediction=False):
         )
 
         prop['predicted_value'] = float(predicted_value)
+        prop['zpid'] = zpid
     return prop
 
 """Update doc in db"""

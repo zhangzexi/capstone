@@ -1,14 +1,45 @@
+include mixins
 html
   head
     title
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
   body
-    .navbar.navbar-fixed-top(role='navigation')
-      .container-fluid
-        .nav.navbar-right
-          form#login(metdho='get', action='/login')
-            input.btn.navbar-btn(value='Sign in', type='submit', style='margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;')
+     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+        script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/') MyEstimate
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.nav-pills.navbar-right
+            li
+              a(href='/') Home
+            li
+              a(href='/about') About
+            li
+              a(href='/estimator') Estimator
+            li.active(role='presentation')
+              if logged_in_user
+                a(href='/logout') Log out
+              else
+                a(href='/login') Sign in
+
+            li
+                +nav_item_dropdown("#")(label="My")
+                    +nav_item("/login" , "active") Login
+                    +nav_item("/estimator") Another action
+                    +nav_item("/register") register
+
+
+
     div(style='margin-top: 10%')
       img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
       br
@@ -56,42 +87,42 @@ html
                       li.list-group-item
                         label Elementary School:
                         select.form-control(name='es', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
                       li.list-group-item
                         label Middle School:
                         select.form-control(name='ms', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
                       li.list-group-item
                         label High School:
                         select.form-control(name='hs', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
             .col-md-5
               .well
                 legend New
@@ -114,42 +145,42 @@ html
                       li.list-group-item
                         label Elementary School:
                         select.form-control(name='new_es', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
                       li.list-group-item
                         label Middle School:
                         select.form-control(name='new_ms', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
                       li.list-group-item
                         label High School:
                         select.form-control(name='new_hs', form='estimate')
-                          option(value= 1) 1
-                          option(value= 2) 2
-                          option(value= 3) 3
-                          option(value= 4) 4
-                          option(value= 5) 5
-                          option(value= 6) 6
-                          option(value= 7) 7
-                          option(value= 8) 8
-                          option(value= 9) 9
-                          option(value= 10) 10
+                          option(value='1') 1
+                          option(value='2') 2
+                          option(value='3') 3
+                          option(value='4') 4
+                          option(value='5') 5
+                          option(value='6') 6
+                          option(value='7') 7
+                          option(value='8') 8
+                          option(value='9') 9
+                          option(value='10') 10
             .col-md-1
           .row
             .col-md-1

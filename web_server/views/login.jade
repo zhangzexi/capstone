@@ -15,7 +15,11 @@ html
             input(class="form-control", id="email", type="email", name="email", placeholder="Enter your email", required)
           .form-group
             input(class="form-control", id="password", type="password", name="password", placeholder="Password", required)
-          input(class="btn btn-default btn-block" type="submit", value="Log in")
+
+          .form-group
+            button.btn.btn-default Login
+            &nbsp&nbsp&nbsp&nbsp
+            a(href="register") I'm New here
         br
         - if (message)
           div.alert.alert-danger(role="alert") !{message}

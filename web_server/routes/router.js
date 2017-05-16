@@ -2,6 +2,7 @@ var express = require('express');
 var passwordHash = require('password-hash');
 var session = require('client-sessions');
 var User = require('../model/user');
+var UserLikes = require('../model/userlike');
 var rpc_client = require('../rpc_client/rpc_client');
 var router = express.Router();
 var Geohash = require('latlon-geohash');
@@ -24,14 +25,16 @@ router.get('/', function(req, res, next) {
   var user = checkLoggedIn(req, res)
   res.render('index', { title: TITLE, logged_in_user: user });
 });
+
+
 /*testing estimation*/
 router.get('/estimator', function(req, res, next) {
-
-  res.render('estimator', { title: TITLE });
+  var user = checkLoggedIn(req, res)
+  res.render('estimator', { title: TITLE, logged_in_user: user });
 });
 
 router.get('/estimation_summary', function(req, res, next) {
-
+  var user = checkLoggedIn(req, res)
 
   geocoder.geocode(req.query.address, function(err, resp) {
       console.log(resp)
@@ -63,6 +66,7 @@ router.get('/estimation_summary', function(req, res, next) {
             console.log("***" + response)
             res.render('estimation_summary', {
                 title: TITLE,
+                logged_in_user,
                 address: query.address,
                 ptype: query.ptype,
                 geohash : query.geohash,
@@ -95,6 +99,7 @@ router.get('/estimation_summary', function(req, res, next) {
 /* Search page */
 router.get('/search', function(req, res, next) {
   var query = req.query.search_text;
+  var user = checkLoggedIn(req, res)
   console.log("search text: " + query)
 
   rpc_client.searchArea(query, function(response) {
@@ -111,11 +116,14 @@ router.get('/search', function(req, res, next) {
     res.render('search_result', {
       title: TITLE,
       query: query,
-      results: results
+      results: results,
+      logged_in_user: user
     });
 
   });
 });
+
+
 
 /* Property detail page*/
 router.get('/detail', function(req, res, next) {
@@ -228,6 +236,48 @@ router.post('/register', function(req, res, next) {
   });
 });
 
+/*like */
+
+
+router.post('/like', function(req, res) {
+  var email = req.body.email;
+  var zpid = req.body.zpid;
+
+
+
+    UserLikes.find({ email : email, zpid : zpid }, function(err, users) {
+    if (err) throw err;
+    if (users.length > 0) {
+      console.log("User found for: " + email);
+      res.redirect('back');
+    } else {
+        var newLike = UserLikes({
+            email: email,
+            zpid : zpid,
+          });
+        //save likes
+          newLike.save(function(err) {
+          if (err) throw err;
+          console.log('User Like created!');
+
+        });
+          console.log("ididid: " + zpid + "email : " + email);
+          res.redirect('back')
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+});
+
+
 /* Logout */
 router.get('/logout', function(req, res) {
   req.session.reset();
@@ -262,6 +312,8 @@ function addThousandSeparator(property) {
   property['list_price'] = numberWithCommas(property['list_price']);
   property['size'] = numberWithCommas(property['size']);
   property['predicted_value'] = numberWithCommas(property['predicted_value']);
+  property['lotsize'] = numberWithCommas(property['lotsize']);
+  property['zestimate'] = numberWithCommas(property['zestimate']);
 }
 
 function numberWithCommas(x) {

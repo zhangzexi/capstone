@@ -1,33 +1,58 @@
+include mixins
 doctype html
 html
-
   head
-    title= title
+    title
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
-
+    //link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css", rel="stylesheet")
   body
-    .navbar.navbar-fixed-top(role='navigation')
-      .container-fluid
-        .nav.navbar-right
-          if logged_in_user
-            form(metdho="get", action="/logout", id="logout")
-              input(class="btn navbar-btn" value="Log out" type="submit" style="margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;")
-          else
-            form(metdho="get", action="/login", id="login")
-              input(class="btn navbar-btn" value="Sign in" type="submit" style="margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;")
 
-    div(style="margin-top: 10%")
-      img(src="/logo.png", style="display: block; margin-left: auto; margin-right: auto ")
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+        script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/') MyEstimate
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.nav-pills.navbar-right
+            li
+              a(href='/') Home
+            li
+              a(href='/about') About
+            li
+              a(href='/estimator') Estimator
+            li.active(role='presentation')
+              if logged_in_user
+                a(href='/logout') Log out
+              else
+                a(href='/login') Sign in
+
+            li
+                +nav_item_dropdown("#")(label="My")
+                    +nav_item("/login" , "active") Login
+                    +nav_item("/estimator") Another action
+                    +nav_item("/register") register
+
+    div(style='margin-top: 10%')
+      img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
       br
       br
       br
       .container
         .col-md-2
         .col-md-8
-          form(method="get", action="/search", id="search")
+          form#search(method='get', action='/search')
             .col-md-10
-              input.form-control(id="search_text", name="search_text", placeholder="Search by City/State or Zipcode" style="font-size: 120%;")
+              input#search_text.form-control(name='search_text', placeholder='Search by City/State or Zipcode', style='font-size: 120%;')
             .col-md-2
-              input.form-control(class="btn" type="submit" value="Search" style="font-size: 120%; background-color: #4285f4; color: white;")
+              input.form-control.btn(type='submit', value='Search', style='font-size: 120%; background-color: #4285f4; color: white;')
         .col-md-2
+

@@ -41,8 +41,7 @@ html
                 id='confirm-password', placeholder='Confirm password', required)
             .form-group
               button.btn.btn-default Register
-              &nbsp&nbsp&nbsp&nbsp
-              a(href="login") or Login
+
         - if (message)
           #message.alert.alert-danger(role="alert") !{message}
         - else

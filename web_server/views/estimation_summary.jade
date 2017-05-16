@@ -1,90 +1,93 @@
-html
-  head
-    title
-    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
-  body
-    .navbar.navbar-fixed-top(role='navigation')
-      .container-fluid
-        .nav.navbar-right
-          form#login(metdho='get', action='/login')
-            input.btn.navbar-btn(value='Sign in', type='submit', style='margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;')
-    div(style='margin-top: 10%')
-      img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
-      br
-      br
-      br
-      .container
-        form#search(method='get', action='/search')
-          .row
-            .col-md-1
-            .col-md-10
-              .well
-                legend Property Summary:
-                p Address : #{address}
-                p Property Type : #{ptype}
-            .col-md-1
-          .row
-            .col-md-1
-            .col-md-5
-              .well
-                Legend Current Summary:
-                p floor_size : #{floor_size}
-                p lot_size : #{lot_size}
-                p number of bedroom : #{bedr}
-                p number of bathroom : #{bathr}
-                label school ratings
-                ul.list-group
-                  li.list-group-item
-                    label Elementary:
-                      #{es}
-                  li.list-group-item
-                    label Middle:
-                      #{ms}
-                  li.list-group-item
-                    label High:
-                      #{hs}
-            .col-md-5
-              .well
-                Legend New Summary:
-                p floor_size : #{new_floor_size}
-                p lot_size : #{new_lot_size}
-                p number of bedroom : #{new_bedr}
-                p number of bathroom: #{new_bathr}
-                label school ratings
-                ul.list-group
-                  li.list-group-item
-                    label Elementary:
-                      #{new_es}
-                  li.list-group-item
-                    label Middle:
-                      #{new_ms}
-                  li.list-group-item
-                    label High:
-                      #{new_hs}
-            .col-md-1
+extends layout
 
-          .row
-            .col-md-1
-            .col-md-10
-              .well
-                Legend Estimation Summary:
-                p current_estimation : $#{current_estimation}
-                p new_estimation : $#{new_estimation}
-                p changes : #{changes}%
-            .col-md-1
-                 //floor_size #{floor_size}
-                 //
-                 //bedr #{bedr}
-                 //bathr #{bathr}
-                 //es #{es}
-                 //ms #{ms}
-                 //hs #{hs}
-                 //new_floor_size #{new_floor_size}
-                 //new_lot_size #{new_lot_size}
-                 //new_bedr #{new_bedr}
-                 //new_bathr #{new_bathr}
-                 //new_es #{new_es}
-                 //new_ms #{new_ms}
-                 //new_hs #{new_hs}
+block content
+  html
+    head
+      title
+      link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+    body
+      .navbar.navbar-fixed-top(role='navigation')
+        .container-fluid
+          .nav.navbar-right
+            form#login(metdho='get', action='/login')
+              input.btn.navbar-btn(value='Sign in', type='submit', style='margin-right:120px; margin-top: 40px; font-size:110%; background-color: #4285f4; color: white;')
+      div(style='margin-top: 10%')
+        img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
+        br
+        br
+        br
+        .container
+          form#search(method='get', action='/search')
+            .row
+              .col-md-1
+              .col-md-10
+                .well
+                  legend Property Summary:
+                  p Address : #{address}
+                  p Property Type : #{ptype}
+              .col-md-1
+            .row
+              .col-md-1
+              .col-md-5
+                .well
+                  Legend Current Summary:
+                  p floor_size : #{floor_size}
+                  p lot_size : #{lot_size}
+                  p number of bedroom : #{bedr}
+                  p number of bathroom : #{bathr}
+                  label school ratings
+                  ul.list-group
+                    li.list-group-item
+                      label Elementary:
+                        #{es}
+                    li.list-group-item
+                      label Middle:
+                        #{ms}
+                    li.list-group-item
+                      label High:
+                        #{hs}
+              .col-md-5
+                .well
+                  Legend New Summary:
+                  p floor_size : #{new_floor_size}
+                  p lot_size : #{new_lot_size}
+                  p number of bedroom : #{new_bedr}
+                  p number of bathroom: #{new_bathr}
+                  label school ratings
+                  ul.list-group
+                    li.list-group-item
+                      label Elementary:
+                        #{new_es}
+                    li.list-group-item
+                      label Middle:
+                        #{new_ms}
+                    li.list-group-item
+                      label High:
+                        #{new_hs}
+              .col-md-1
+
+            .row
+              .col-md-1
+              .col-md-10
+                .well
+                  Legend Estimation Summary:
+                  p current_estimation : $#{current_estimation}
+                  p new_estimation : $#{new_estimation}
+                  p changes : #{changes}%
+              .col-md-1
+                   //floor_size #{floor_size}
+                   //
+                   //bedr #{bedr}
+                   //bathr #{bathr}
+                   //es #{es}
+                   //ms #{ms}
+                   //hs #{hs}
+                   //new_floor_size #{new_floor_size}
+                   //new_lot_size #{new_lot_size}
+                   //new_bedr #{new_bedr}
+                   //new_bathr #{new_bathr}
+                   //new_es #{new_es}
+                   //new_ms #{new_ms}
+                   //new_hs #{new_hs}
 
