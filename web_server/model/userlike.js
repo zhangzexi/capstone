@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 // Create a userlike schema.
 var userSchema = new Schema({
-  email: { type: String, required: true},
+  email: { type: String},
   zpid: { type: String, required: true },
 });
 

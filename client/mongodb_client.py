@@ -2,7 +2,8 @@ from pymongo import MongoClient
 
 MONGO_DB_HOST = 'localhost'
 MONGO_DB_PORT = '27017'
-DB_NAME = 'real_estate_smart_view_testing'
+DB_NAME = 'real-estate-smart-view'
+
 
 client = MongoClient('%s:%s' % (MONGO_DB_HOST, MONGO_DB_PORT))
 

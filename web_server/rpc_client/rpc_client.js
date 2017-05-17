@@ -70,6 +70,15 @@ function getEstimation(query,callback){
     });
 }
 //
+// Get user likes
+function getUserLikes(email, callback) {
+    client.request('getUserLikes', [email], function(err, error, response) {
+        if (err) throw err;
+        console.log("getUserLike rpc for" + email);
+        console.log("get user like rpc response : "+response);
+        callback(response);
+    });
+}
 
 module.exports = {
     add : add,
@@ -79,4 +88,5 @@ module.exports = {
     searchArea : searchArea,
     getDetailsByZpid : getDetailsByZpid,
     getEstimation : getEstimation,
+    getUserLikes : getUserLikes,
 };

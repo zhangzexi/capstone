@@ -8,6 +8,7 @@ var router = express.Router();
 var Geohash = require('latlon-geohash');
 var NodeGeocoder = require('node-geocoder');
 
+
 //google geocoder api initialization
 var options = {
   provider: 'google',
@@ -66,7 +67,7 @@ router.get('/estimation_summary', function(req, res, next) {
             console.log("***" + response)
             res.render('estimation_summary', {
                 title: TITLE,
-                logged_in_user,
+                logged_in_user : user,
                 address: query.address,
                 ptype: query.ptype,
                 geohash : query.geohash,
@@ -123,6 +124,51 @@ router.get('/search', function(req, res, next) {
   });
 });
 
+/* Profile page */
+router.get('/profile', function(req, res, next) {
+
+  var user = checkLoggedIn(req, res)
+  console.log("user_profile" + user)
+  if(!user){
+      res.redirect('back');
+  }
+
+  rpc_client.getUserLikes(user, function(response) {
+      console.log("send " + user + " to rpc")
+      properties = [];
+      if(response == undefined || response == null){
+          console.log("No results found from rpc");
+      } else {
+          properties = response;
+          console.log("back to rpc results :" + properties);
+          res.render('profile',{
+              title:TITLE,
+              logged_in_user: user,
+              property: properties,
+          })
+      }
+  });
+  // rpc_client.searchArea(query, function(response) {
+  //   results = [];
+  //   if (response == undefined || response === null) {
+  //     console.log("No results found");
+  //   } else {
+  //     results = response;
+  //   }
+  //
+  //   // Add thousands separators for numbers.
+  //   addThousandSeparatorForSearchResult(results)
+  //
+  //   res.render('search_result', {
+  //     title: TITLE,
+  //     query: query,
+  //     results: results,
+  //     logged_in_user: user
+  //   });
+  //
+  // });
+});
+
 
 
 /* Property detail page*/
@@ -148,19 +194,37 @@ router.get('/detail', function(req, res, next) {
     // Add thousands separators for numbers.
     addThousandSeparator(property);
 
-    // Split facts and additional facts
-    //splitFacts(property, 'facts');
-    //splitFacts(property, 'additional_facts');
-    console.log(property['facts'])
+    var email = logged_in_user
+    var zpid = property['zpid']
+    //console.log(property['facts'])
     property['facts'] = splitFact(property['facts'])
+    if(logged_in_user){
+        UserLikes.find({ email : email, zpid : zpid }, function(err, users){
 
-    res.render('detail', 
-      {
-        title: 'Capstone',
-        query: '',
-        logged_in_user: logged_in_user,
-        property : property
-      });
+            if(users.length > 0){
+
+                res.render('detail',
+                  {
+                    title: 'Capstone',
+                    query: '',
+                    logged_in_user: logged_in_user,
+                    property : property,
+                    liked : true,
+                  });
+            } else {
+                res.render('detail',
+                  {
+                    title: 'Capstone',
+                    query: '',
+                    logged_in_user: logged_in_user,
+                    property : property,
+                    liked : false,
+                  });
+            }
+        });
+    }
+
+
   });
 });
 
@@ -242,39 +306,39 @@ router.post('/register', function(req, res, next) {
 router.post('/like', function(req, res) {
   var email = req.body.email;
   var zpid = req.body.zpid;
+  if(!email){
 
+      res.render('login',{
+        title : TITLE,
+        message : "Please login for like feature or <a href='/register'>rigester</a>"
+      } );
+  }else{
 
-
-    UserLikes.find({ email : email, zpid : zpid }, function(err, users) {
-    if (err) throw err;
-    if (users.length > 0) {
-      console.log("User found for: " + email);
-      res.redirect('back');
-    } else {
-        var newLike = UserLikes({
-            email: email,
-            zpid : zpid,
-          });
-        //save likes
-          newLike.save(function(err) {
-          if (err) throw err;
-          console.log('User Like created!');
-
-        });
-          console.log("ididid: " + zpid + "email : " + email);
+      UserLikes.find({ email : email, zpid : zpid }, function(err, users) {
+        if (err) throw err;
+        if (users.length > 0) {
+          UserLikes.remove({ email : email, zpid : zpid }, function (err) {
+              if (err) return handleError(err);
+              // removed!
+            });
           res.redirect('back')
-    }
-  });
+        } else {
 
+            var newLike = UserLikes({
+                email: email,
+                zpid : zpid,
+              });
+            //save likes
+              newLike.save(function(err) {
+              if (err) throw err
+              console.log('User Like created!');
 
-
-
-
-
-
-
-
-
+            });
+              console.log("ididid: " + zpid + "email : " + email);
+              res.redirect('back')
+        }
+      });
+  }
 });
 
 

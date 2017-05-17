@@ -20,6 +20,7 @@ SERVER_PORT = 4040
 
 # DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
 PROPERTY_TABLE_NAME = 'property_for_sale'
+PROPERTY_TABLE_NAME_FOR_LIKES = 'userlikes'
 
 """Search a property with specific address and citystatezip"""
 def searchByAddress(address, citystatezip):
@@ -114,6 +115,10 @@ def storeUpdates(properties):
 def findProperyByZipcode(zipcode):
     db = mongodb_client.getDB()
     properties = list(db[PROPERTY_TABLE_NAME].find({'zipcode': zipcode, 'is_for_sale': True}))
+    # res = []
+    # for x in properties:
+    #     res.append(x['zpid'])
+    # print res
     return [x['zpid'] for x in properties]
 
 
@@ -168,3 +173,38 @@ def getLot(prop):
         if count + 1 == len(prop["facts"]):
             return 0
     return lotsize
+
+"""get user likes"""
+def getUserLikes(query):
+    res = []
+    db = mongodb_client.getDB()
+    records = list(db[PROPERTY_TABLE_NAME_FOR_LIKES].find({'email' : query}))
+
+    for record in records:
+        detail = getDetailsByZpid(record['zpid'],False)
+        # temp = {}
+        # temp['img'] = detail['image_url']
+        # temp['zpid'] = record['zpid']
+        # temp['address'] = detail['street_address']
+        # temp['']
+        res.append(detail)
+    print res
+    return json.loads(dumps(res))
+
+
+    # return [record['zpid'] for record in records]
+
+# def findProperyByZipcode(zipcode):
+#     db = mongodb_client.getDB()
+#     properties = list(db[PROPERTY_TABLE_NAME].find({'zipcode': zipcode, 'is_for_sale': True}))
+#     res = []
+#     for x in properties:
+#         res.append(x['zpid'])
+#     print res
+#     return [x['zpid'] for x in properties]
+#
+def main():
+    getUserLikes('zhangzexi.dz@Gmail.com')
+    #getDetailsByZpid(112094946,False)
+
+if __name__ == "__main__": main()

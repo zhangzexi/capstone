@@ -57,6 +57,14 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
         str(query))
         return operations.getEstimation(query)
 
+    """get user likes by user email"""
+
+    @pyjsonrpc.rpcmethod
+    def getUserLikes(self, query):
+        print "getUserLikes gets called with query=[%s]" % (
+            str(query))
+        return operations.getUserLikes(query)
+
 # Threading HTTP-Server
 http_server = pyjsonrpc.ThreadingHttpServer(
     server_address = (SERVER_HOST, SERVER_PORT),
