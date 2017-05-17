@@ -54,6 +54,21 @@ block content
                     span.h4(style="color: green;") $#{property.predicted_value} (+#{property.predicted_change}%)
                 else
                     span.h4(style="color: red;") $#{property.predicted_value} (#{property.predicted_change}%)
+            .panel-body
+
+                if property.szpids != null
+                    for szpid in property.szpids
+                        a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
+                        br
+                else
+                    h1 similar not found
+                //if property.szpids
+                //    h4= property.szpids
+                //    h4 Similar Properties:
+                //    for szpid in property.szpids
+                //        a(href='/detail?id=#{szpid}') Similar Properties
+                //        br
+
 
         //tr
         //ul.list-group

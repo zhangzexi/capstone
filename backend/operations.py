@@ -188,8 +188,9 @@ def getUserLikes(query):
         # temp['address'] = detail['street_address']
         # temp['']
         res.append(detail)
-    print res
+
     return json.loads(dumps(res))
+
 
 
     # return [record['zpid'] for record in records]
@@ -203,8 +204,8 @@ def getUserLikes(query):
 #     print res
 #     return [x['zpid'] for x in properties]
 #
-def main():
-    getUserLikes('zhangzexi.dz@Gmail.com')
-    #getDetailsByZpid(112094946,False)
-
-if __name__ == "__main__": main()
+# def main():
+#     getUserLikes([25965528, 25965524, 26083043, 25965209, 25965178])
+#     #getDetailsByZpid(112094946,False)
+#
+# if __name__ == "__main__": main()

@@ -286,6 +286,13 @@ def get_property_by_zpid(zpid):
     except Exception:
         pass
 
+    # similar zpids
+    szpids = []
+    try:
+        szpids = get_similar_homes_for_sale_by_id(zpid)
+    except Exception:
+        pass
+
     return {
             'zpid' : zpid,
             'street_address' : street_address,
@@ -309,7 +316,8 @@ def get_property_by_zpid(zpid):
             'school_ratingM': schoolratingM,
             'school_ratingH': schoolratingH,
             'facts': facts,
-            'zestimate': zestimate
+            'zestimate': zestimate,
+            'szpids' : szpids
             }
 
 """Get properties' information by zipcode"""

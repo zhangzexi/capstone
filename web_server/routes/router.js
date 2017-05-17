@@ -182,6 +182,7 @@ router.get('/detail', function(req, res, next) {
     property = {}
     if (response === undefined || response === null) {
       console.log("No results found");
+
     } else {
       property = response;
     }
@@ -196,32 +197,51 @@ router.get('/detail', function(req, res, next) {
 
     var email = logged_in_user
     var zpid = property['zpid']
-    //console.log(property['facts'])
+    //console.log(property['facts']
+
     property['facts'] = splitFact(property['facts'])
     if(logged_in_user){
         UserLikes.find({ email : email, zpid : zpid }, function(err, users){
 
+
             if(users.length > 0){
 
-                res.render('detail',
-                  {
-                    title: 'Capstone',
-                    query: '',
-                    logged_in_user: logged_in_user,
-                    property : property,
-                    liked : true,
-                  });
+                    res.render('detail',
+                      {
+                        title: 'Capstone',
+                        query: '',
+                        logged_in_user: logged_in_user,
+                        property : property,
+                        liked : true,
+                      });
+
+
             } else {
-                res.render('detail',
-                  {
-                    title: 'Capstone',
-                    query: '',
-                    logged_in_user: logged_in_user,
-                    property : property,
-                    liked : false,
-                  });
+
+                    res.render('detail',
+                      {
+                        title: 'Capstone',
+                        query: '',
+                        logged_in_user: logged_in_user,
+                        property : property,
+                        liked : false,
+
+                      });
+
             }
         });
+    } else {
+
+                    res.render('detail',
+                      {
+                        title: 'Capstone',
+                        query: '',
+                        logged_in_user: logged_in_user,
+                        property : property,
+                        liked : false,
+
+                      });
+
     }
 
 
@@ -396,24 +416,29 @@ function numberWithCommas(x) {
 
 function splitFact(fact){
     var res = [];
-    for(var i=0;i<fact.length;i++){
-        if (fact[i].includes(":")){
-            var temp = fact[i];
-        }else{
-            temp += fact[i];
-            if (i + 1 != fact.length){
-                if (fact[i+1].includes(":")){
-                    res.push(temp);
-                }else{
-                    temp += ", ";
-                    continue;
-                }
+
+        for(var i=0;i<fact.length;i++){
+            if (fact[i].includes(":")){
+                var temp = fact[i];
             }else{
-                res.push(temp);
+                temp += fact[i];
+                if (i + 1 != fact.length){
+                    if (fact[i+1].includes(":")){
+                        res.push(temp);
+                    }else{
+                        temp += ", ";
+                        continue;
+                    }
+                }else{
+                    res.push(temp);
+                }
             }
         }
-    }
-    return res;
+
+
+        return res;
+
+
 }
 
 module.exports = router;

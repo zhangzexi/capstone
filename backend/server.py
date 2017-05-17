@@ -63,6 +63,7 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
     def getUserLikes(self, query):
         print "getUserLikes gets called with query=[%s]" % (
             str(query))
+
         return operations.getUserLikes(query)
 
 # Threading HTTP-Server
