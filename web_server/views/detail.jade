@@ -2,9 +2,11 @@ include mixins
 extends layout
 
 block content
+
   table
     tr
       td(colspan="2", style="100%")
+        h1= liked
         div(style="float:left;")
           if property.image_url == ""
             img(src="/default.png", style="width:500px;")
@@ -31,7 +33,10 @@ block content
                     input(type='text', name='zpid', class='form-control',
                     id='zpid',value= property.zpid)
                 .form-group
-                    button.btn.btn-default Like
+                    if liked
+                        button.btn.btn-default Remove
+                    else
+                        button.btn.btn-default Like
 
           tr
       td(style="padding-right:190px;width:400px;")
@@ -122,9 +127,5 @@ block content
         map.entities.push(pushpin);  
     }
 
-    function myFunction() {
-        document.getElementById("email").value = logged_in_user;
-        document.getElementById("zpid").value = property.zpid;
-        alert(property.zpid);
-    }
+
   script(type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=loadMapScenario' async defer)
