@@ -124,6 +124,12 @@ router.get('/search', function(req, res, next) {
   });
 });
 
+/* About page */
+router.get('/about', function(req, res, next) {
+  var user = checkLoggedIn(req, res)
+  res.render('about', { title: TITLE, logged_in_user: user });
+});
+
 /* Profile page */
 router.get('/profile', function(req, res, next) {
 
@@ -416,7 +422,13 @@ function numberWithCommas(x) {
 
 function splitFact(fact){
     var res = [];
-
+    // if(fact === undefined){
+    //     tempp = "abc";
+    //     tempp2 = "bcd";
+    //     res.push(tempp2);
+    //     res.push(tempp);
+    //     return res;
+    // }
         for(var i=0;i<fact.length;i++){
             if (fact[i].includes(":")){
                 var temp = fact[i];

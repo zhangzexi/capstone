@@ -8,7 +8,7 @@ from re import sub
 from urllib import pathname2url
 import pandas as pd
 URL = '''http://www.zillow.com'''
-SEARCH_FOR_SALE_PATH = '''homes/recently_sold'''
+SEARCH_FOR_SALE_PATH = '''homes/for_sale'''
 GET_PROPERTY_BY_ZPID_PATH = '''homes'''
 GET_SIMILAR_HOMES_FOR_SALE_PATH = '''homedetails'''
 IMAGE_URL_REGEX_PATTERN = '"z_listing_image_url":"([^"]+)",'
@@ -214,7 +214,8 @@ def get_property_by_zpid(zpid):
         if len(list_price_raw) > 0:
             list_price = float(list_price_raw[0].replace(',', '').strip(' $'))
     except Exception:
-        pass
+        if SEARCH_FOR_SALE_PATH == '''homes/for_sale''':
+            list_price = -1
 
     # geo + geohash
     latitude = None
@@ -245,12 +246,13 @@ def get_property_by_zpid(zpid):
 
     # Basic facts
     facts = None
-    lotsize = None
+
     try:
         facts = tree.xpath(GET_INFO_XPATH_FOR_FACTS)
-        lotsize = lotsize_fact(facts)
+        if len(facts) == 0:
+            facts = ["Not Provided"]
     except Exception:
-        pass
+        facts = ["Not Provided"]
 
     # Additional facts
     additional_facts = None
@@ -270,26 +272,33 @@ def get_property_by_zpid(zpid):
     except Exception:
         pass
 
+    #similar zpids
+    szpids = []
+    try:
+        szpids = get_similar_homes_for_sale_by_id(zpid)
+        if len(szpids) == 0:
+            szpids = ["123465789"]
+
+    except Exception:
+        szpids = ["123465789"]
+
     #zEstimate
     zestimate = None
     try:
         zestimate_raw = tree.xpath(GET_INFO_XPATH_FOR_ZESTIMATE)
         if len(zestimate_raw) > 0:
             zestimate = float(zestimate_raw[0].replace(',', '').strip(' $'))
+            if SEARCH_FOR_SALE_PATH == '''homes/for_sale''':
+                if zestimate == 0:
+                    zestimate = list_price
     except Exception:
-        pass
+        if SEARCH_FOR_SALE_PATH == '''homes/for_sale''':
+            zestimate = list_price
 
     #facts
     facts = None
     try :
         facts = tree.xpath(GET_INFO_XPATH_FOR_FACTS_NEW)
-    except Exception:
-        pass
-
-    # similar zpids
-    szpids = []
-    try:
-        szpids = get_similar_homes_for_sale_by_id(zpid)
     except Exception:
         pass
 
@@ -332,9 +341,3 @@ def get_properties_by_city_state(city, state):
     zpids = search_zillow_by_city_state(city, state)
     return [get_property_by_zpid(zpid) for zpid in zpids]
 
-# def ready_for_concat(dict):
-#     series = pd.Series(dict)
-#     df2 = pd.DataFrame()
-#     df2 = pd.concat([df2,series])
-#     df2 = df2.T
-#     return df2

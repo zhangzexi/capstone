@@ -57,9 +57,13 @@ block content
             .panel-body
 
                 if property.szpids != null
+
                     for szpid in property.szpids
-                        a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
-                        br
+                        if szpid != "-1"
+                            a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
+                            br
+                        else
+                            h1 similar not found
                 else
                     h1 similar not found
                 //if property.szpids
