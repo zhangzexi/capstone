@@ -43,6 +43,8 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
     """Test method"""
     @pyjsonrpc.rpcmethod
     def predict(self, property_type, bedroom, bathroom, geohash, school_ratingE, school_ratingH, school_ratingM, size, zestimate, lotsize):
+        if(zestimate == None or size == None):
+            return -1
         sample = pandas.DataFrame({
             'property_type': property_type,
             'bedroom': bedroom,

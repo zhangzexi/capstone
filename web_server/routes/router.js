@@ -34,12 +34,15 @@ router.get('/estimator', function(req, res, next) {
   res.render('estimator', { title: TITLE, logged_in_user: user });
 });
 
+/*estimation summary*/
 router.get('/estimation_summary', function(req, res, next) {
   var user = checkLoggedIn(req, res)
 
   geocoder.geocode(req.query.address, function(err, resp) {
       console.log(resp)
     var gh = Geohash.encode(resp[0].latitude,resp[0].longitude, [5]);
+    var indicator = true
+
     var query = {
         "address" : resp[0].formattedAddress,
         "ptype" : req.query.ptype,
