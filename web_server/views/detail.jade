@@ -2,133 +2,101 @@ include mixins
 extends layout
 
 block content
-
-  table
-    tr
-      td(colspan="2", style="100%")
-        div(style="float:left;")
+  .row
+    .col.col-md-6
           if property.image_url == ""
-            img(src="/default.png", style="width:500px;")
+            img(src="/default.png", style="width:550px;")
           else
-            img(src= property.image_url, onerror="this.src='/default.jpg'", style="width:500px;")
-        div(style="float:left; margin-left:10px;")
+            img(src= property.image_url, onerror="this.src='/default.jpg'", style="width:550px; height:374px;")
+    .col.col-md-6
           div(id="map", style="width:400px; height:374px;")
-    tr
-      td(style="padding-left:10px; width:700px;")
-        table
-          tr
-            h2 #{property.street_address}
+  .row
+        .col.col-md-8
+            h3 #{property.street_address}
             h3 #{property.city}, #{property.state} #{property.zipcode}
-          tr
             h4 #{property.property_type} - #{property.bedroom} Bed / #{property.bathroom} Bath - #{property.size} sqft
-            h4 Lot Size: #{property.lotsize} sqft
-
-
             form(id='like-form', name="like-form", method='POST', action="/like")
-                .hidden
-                    input(type='email', name='email', class='form-control',
-                    id='email',value=logged_in_user)
-                .hidden
-                    input(type='text', name='zpid', class='form-control',
-                    id='zpid',value= property.zpid)
-                .form-group
-                    if liked
-                        button.btn.btn-default Remove
-                    else
-                        button.btn.btn-default Like
-
-          tr
-      td(style="padding-right:190px;width:400px;")
-        br
-        .panel.panel-warning
-            .panel-heading
-                h3.panel-title
-                    if property.is_for_sale == true
-                        h4(style="color: green;") • For Sale
-                        span.h3 $#{property.list_price}
-                    else
-                        h4(style="color: red;") Not For Sale
-            .panel-body
-                h4 Estimate value:
-                if property.predicted_change >= 0
-                    span.h4(style="color: green;") $#{property.predicted_value} (+#{property.predicted_change}%)
-                else
-                    span.h4(style="color: red;") $#{property.predicted_value} (#{property.predicted_change}%)
-            .panel-body
-
-                if property.szpids != null
-
-                    for szpid in property.szpids
-                        if szpid != "-1"
-                            a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
-                            br
+                    .hidden
+                        input(type='email', name='email', class='form-control',
+                        id='email',value=logged_in_user)
+                    .hidden
+                        input(type='text', name='zpid', class='form-control',
+                        id='zpid',value= property.zpid)
+                    .form-group
+                        if liked
+                            button.btn.btn-default Remove
                         else
-                            h1 similar not found
-                else
-                    h1 similar not found
-                //if property.szpids
-                //    h4= property.szpids
-                //    h4 Similar Properties:
-                //    for szpid in property.szpids
-                //        a(href='/detail?id=#{szpid}') Similar Properties
-                //        br
+                            button.btn.btn-default Like
+        .col.col-md-4
+            br
+            .panel.panel-warning(style="width:215px")
+                .panel-heading
+                    h4.panel-title
+                        if property.is_for_sale == true
+                            h4(style="color: green;") • For Sale
+                            span.h4 $#{property.list_price}
+                        else
+                            h4(style="color: red;") Not For Sale
+                .panel-body
+                    p Estimate value:
+                    if property.predicted_change >= 0
+                        span.h4(style="color: green;") $#{property.predicted_value} (+#{property.predicted_change}%)
+                    else
+                        span.h4(style="color: red;") $#{property.predicted_value} (#{property.predicted_change}%)
+                .panel-body
+                    if property.szpids != null
+                        for szpid in property.szpids
+                            if szpid != "-1"
+                                a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
+                                    br
+                            else
+                                h1 similar not found
+                    else
+                        h1 similar not found
+        //.col.col-md-2
+  p= property.facts.length
+  p= property.facts
+  p= property.field2
+  .row
+    .col.col-md-6
+      p= property.description
+        h4 Elementary School : #{property.school_ratingE}
+        br
+        h4 Middle School : #{property.school_ratingM}
+        br
+        h4 High School : #{property.school_ratingH}
+        Legend Z-estimate:
+        p= property.zestimate
+        p= logged_in_user
 
-
-        //tr
-        //ul.list-group
-           // li.list-group-item
-              //  Legend Description: p= property.description
-            //li.list-group-item
-              //  Legend Facts:
-                //for each in property.facts
-                    p= each
-    tr
-      td
+  .row
+      .col.col-md-6
+          table.table.table-striped
+          for each in property.field1
+            tr
+              td
+                h5= each
+    .col.col-md-6
         table.table.table-striped
-          tbody
+          for each in property.field2
             tr
-              th
-                Legend Description:
               td
-                p= property.description
-            tr
-                th
-                    Legend School ratings:
-                td
-                    h4 Elementary School : #{property.school_ratingE}
-                    br
-                    h4 Middle School : #{property.school_ratingM}
-                    br
-                    h4 High School : #{property.school_ratingH}
+                h5= each
 
-            tr
-                th
-                    Legend Z-estimate:
-                td
-                    p= property.zestimate
-                    p= logged_in_user
 
-            tr
-              th
-                Legend Fact:
-              td
-                - for(var i = 0; i < property.facts.length; i++)
-                  p= property.facts[i].split(":")
-              //td
-              //  - for(var j =1; j < property.facts.length / 6; j++)
-              //    p= property.facts[j]
-              //td
-              //  - for(var m =2; m < property.facts.length; m++)
-              //    p= property.facts[m]
 
-    //tr
-      //td(style="padding-left: 10px; width: 600px;")
-      //  table
-      //    for additional_fact_group in property.additional_facts
-      //      td(style="width: 30%;" valign="top")
-      //        ul
-      //          for additional_fact in additional_fact_group
-      //            li= additional_fact
+
+
+
+
+       // p #{half}
+        //p = #{field}
+        //for each in property.field1
+         //   p= each
+        //for each in property.field2
+           // p= each
+        //p= property.facts
+
 
   script.
     function loadMapScenario() {
@@ -145,5 +113,11 @@ block content
         map.entities.push(pushpin);  
     }
 
-
+    function groupFact(fact){
+        var factrows=fact.length / 2;
+        //var newgroup = [];
+        //for (var i = 0; i < factrows;i++)
+             //fact[i];
+        return factrows;
+    }
   script(type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=loadMapScenario' async defer)
