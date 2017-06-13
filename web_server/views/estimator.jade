@@ -1,9 +1,11 @@
+extent layout
 include mixins
 html
   head
     title
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
+    //link(rel='stylesheet', href='/stylesheets/style.css')
   body
      nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -16,7 +18,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') MyEstimate
+          a.navbar-brand(href='/') Broncos
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.nav-pills.navbar-right
@@ -34,14 +36,13 @@ html
 
             li
                 +nav_item_dropdown("#")(label="My")
-                    +nav_item("/login" , "active") Login
-                    +nav_item("/estimator") Another action
-                    +nav_item("/register") register
+                    +nav_item("/profile" , "active") Profile
+
 
 
 
     div(style='margin-top: 10%')
-      img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
+      img(src='/logo1.png', style='width:400px;height:180px;display: block; margin-left: auto; margin-right: auto ')
       br
       br
       br
@@ -50,137 +51,144 @@ html
           .row
             .col-md-1
             .col-md-10
-              .well
-                ul.list-group
-                  li.list-group-item
-                    label Address:
-                    input.form-control(type='text', name='address', value='')
-                  li.list-group-item
-                    label Property Type:
-                    select.form-control(name='ptype', form='estimate')
-                      option(value='condo') Condo
-                      option(value='singlef') Single Family
-                      option(value='multif') Multi Family
-                      option(value='town') Town House
+              .panel.panel-info
+                .panel-heading
+                  h4 Property Summary
+                .panel-body
+                  ul.list-group
+                    li.list-group-item
+                      label Address:
+                      input.form-control(type='text', name='address', value='')
+                    li.list-group-item
+                      label Property Type:
+                      select.form-control(name='ptype', form='estimate')
+                        option(value='condo') Condo
+                        option(value='singlef') Single Family
+                        option(value='multif') Multi Family
+                        option(value='town') Town House
             .col-md-1
           .row
             .col-md-1
             .col-md-5
-              .well
-                legend Current
-                ul.list-group
-                  li.list-group-item
-                    label Floor Size:
-                    input.form-control(type='number', name='floor_size', value='',min='20',required = 'true')
-                  li.list-group-item
-                    label Lot Size:
-                    input.form-control(type='number', name='lot_size', value='',min='0',required = 'true')
-                  li.list-group-item
-                    label Number of Bedrooms:
-                    input.form-control(type='number', name='bedr', value='',min='1',required = 'true')
-                  li.list-group-item
-                    label Number of Bathrooms:
-                    input.form-control(type='number', name='bathr', value='',min='0',required = 'true')
-                  li.list-group-item
-                    label School ratings:
-                    ul.list-group
-                      li.list-group-item
-                        label Elementary School:
-                        select.form-control(name='es', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
-                      li.list-group-item
-                        label Middle School:
-                        select.form-control(name='ms', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
-                      li.list-group-item
-                        label High School:
-                        select.form-control(name='hs', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
+              .panel.panel-info
+                .panel-heading
+                  h4 Current Property
+                .panel-body
+                  ul.list-group
+                    li.list-group-item
+                      label Floor Size:
+                      input.form-control(type='number', name='floor_size', value='',min='20',required = 'true')
+                    li.list-group-item
+                      label Lot Size:
+                      input.form-control(type='number', name='lot_size', value='',min='0',required = 'true')
+                    li.list-group-item
+                      label Number of Bedrooms:
+                      input.form-control(type='number', name='bedr', value='',min='1',required = 'true')
+                    li.list-group-item
+                      label Number of Bathrooms:
+                      input.form-control(type='number', name='bathr', value='',min='0',required = 'true')
+                    li.list-group-item
+                      label School ratings:
+                      ul.list-group
+                        li.list-group-item
+                          label Elementary School:
+                          select.form-control(name='es', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
+                        li.list-group-item
+                          label Middle School:
+                          select.form-control(name='ms', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
+                        li.list-group-item
+                          label High School:
+                          select.form-control(name='hs', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
             .col-md-5
-              .well
-                legend New
-                ul.list-group
-                  li.list-group-item
-                    label Floor Size:
-                    input.form-control(type='number', name='new_floor_size', value='',min='20',required = 'true')
-                  li.list-group-item
-                    label Lot Size:
-                    input.form-control(type='number', name='new_lot_size', value='',min='0',required = 'true')
-                  li.list-group-item
-                    label Number of Bedrooms:
-                    input.form-control(type='number', name='new_bedr', value='',min='1',required = 'true')
-                  li.list-group-item
-                    label Number of Bathrooms:
-                    input.form-control(type='number', name='new_bathr', value='',min='0',required = 'true')
-                  li.list-group-item
-                    label School ratings:
-                    ul.list-group
-                      li.list-group-item
-                        label Elementary School:
-                        select.form-control(name='new_es', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
-                      li.list-group-item
-                        label Middle School:
-                        select.form-control(name='new_ms', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
-                      li.list-group-item
-                        label High School:
-                        select.form-control(name='new_hs', form='estimate')
-                          option(value='1') 1
-                          option(value='2') 2
-                          option(value='3') 3
-                          option(value='4') 4
-                          option(value='5') 5
-                          option(value='6') 6
-                          option(value='7') 7
-                          option(value='8') 8
-                          option(value='9') 9
-                          option(value='10') 10
+              .panel.panel-info
+                .panel-heading
+                  h4 Future Property
+                .panel-body
+                  ul.list-group
+                    li.list-group-item
+                      label Floor Size:
+                      input.form-control(type='number', name='new_floor_size', value='',min='20',required = 'true')
+                    li.list-group-item
+                      label Lot Size:
+                      input.form-control(type='number', name='new_lot_size', value='',min='0',required = 'true')
+                    li.list-group-item
+                      label Number of Bedrooms:
+                      input.form-control(type='number', name='new_bedr', value='',min='1',required = 'true')
+                    li.list-group-item
+                      label Number of Bathrooms:
+                      input.form-control(type='number', name='new_bathr', value='',min='0',required = 'true')
+                    li.list-group-item
+                      label School ratings:
+                      ul.list-group
+                        li.list-group-item
+                          label Elementary School:
+                          select.form-control(name='new_es', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
+                        li.list-group-item
+                          label Middle School:
+                          select.form-control(name='new_ms', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
+                        li.list-group-item
+                          label High School:
+                          select.form-control(name='new_hs', form='estimate')
+                            option(value='1') 1
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5') 5
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10
             .col-md-1
           .row
             .col-md-1

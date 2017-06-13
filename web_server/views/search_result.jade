@@ -1,11 +1,11 @@
-extends layout
+extends layout_new
 
 block content
   h3 Search results for "#{query}":
   for result in results
     .row
       .col-md-5
-        img(src="http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/#{result.latitude}%2C#{result.longitude}/13?mapSize=480,460&format=png&pushpin=#{result.latitude},#{result.longitude};86;&key=AqO1MgaLkk7DdoBd-2lajxSIhDXs5aMzE_xLzPU-Lmmjh0rHy2Z6NQeb_iwhYBVx" alt="Bing Map of #{result.latitude}, {result.longitude}")
+        img(src="http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/#{result.latitude}%2C#{result.longitude}/13?mapSize=480,476&format=png&pushpin=#{result.latitude},#{result.longitude};86;&key=AqO1MgaLkk7DdoBd-2lajxSIhDXs5aMzE_xLzPU-Lmmjh0rHy2Z6NQeb_iwhYBVx" alt="Bing Map of #{result.latitude}, {result.longitude}")
 
       .col-md-7
         .col-sm-10.col-md-8
@@ -26,3 +26,8 @@ block content
 
   else
     li Not results found.
+
+
+
+
+

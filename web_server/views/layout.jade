@@ -5,7 +5,7 @@ html
     title= title
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    //link(rel='stylesheet', href='/stylesheets/style.css')
     block head
 
   body
@@ -21,10 +21,10 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') MyEstimate
-          form.navbar-form.navbar-left
-                .form(method="get", action="/search", id="search")
-                    input(id="nav-search-box", name="search_text", type="text", class="form-control", placeholder="Search", value=query, onKeyPress="return checkSubmit(event)")
+          a.navbar-brand(href='/') BroncosEstimator
+          //form.navbar-form.navbar-left
+                //.form(method="get", action="/search", id="search")
+                    //input(id="nav-search-box", name="search_text", type="text", class="form-control", placeholder="Search", value=query, onKeyPress="return checkSubmit(event)")
 
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
@@ -42,8 +42,6 @@ html
                 a(href='/login') Sign in
             li
                 +nav_item_dropdown("#")(label="My")
-                    +nav_item("/login" , "active") Login
-                    +nav_item("/estimator") Another action
                     +nav_item("/profile") profile
 
 
@@ -51,10 +49,10 @@ html
       //search_result page,
       .row
         .col-md-1
-        .col-md-11.main
+        .col-md-10.main
           block content
 
-        //.col-md-1
+        .col-md-1
 
 
       .row

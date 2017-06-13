@@ -3,18 +3,29 @@ extends layout
 
 block content
   .row
-    .col.col-md-6
+    .col.col-md-5
           if property.image_url == ""
-            img(src="/default.png", style="width:550px;")
+            img(src="/default.png", style="height:370px")
           else
-            img(src= property.image_url, onerror="this.src='/default.jpg'", style="width:550px; height:374px;")
-    .col.col-md-6
-          div(id="map", style="width:400px; height:374px;")
+            img(src= property.image_url, onerror="this.src='/default.jpg'", style="height:370px;")
+    .col.col-md-5
+          div(id="map", style=" height:370px;")
   .row
-        .col.col-md-8
+        .col.col-md-6
             h3 #{property.street_address}
             h3 #{property.city}, #{property.state} #{property.zipcode}
             h4 #{property.property_type} - #{property.bedroom} Bed / #{property.bathroom} Bath - #{property.size} sqft
+            .panel.panel-warning
+                .panel-body
+                    if property.szpids != null
+                        for szpid in property.szpids
+                            if szpid != "-1"
+                                a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
+                                    br
+                            else
+                                h4 similar not found
+                    else
+                        h4 similar not found
             form(id='like-form', name="like-form", method='POST', action="/like")
                     .hidden
                         input(type='email', name='email', class='form-control',
@@ -29,59 +40,55 @@ block content
                             button.btn.btn-default Like
         .col.col-md-4
             br
-            .panel.panel-warning(style="width:215px")
+            .panel.panel-warning(style="")
                 .panel-heading
                     h4.panel-title
                         if property.is_for_sale == true
-                            h4(style="color: green;") • For Sale
-                            span.h4 $#{property.list_price}
+                            h4(style="color: green;") • For Sale:
+                                span.h4 $#{property.list_price}
                         else
                             h4(style="color: red;") Not For Sale
                 .panel-body
-                    p Estimate value:
+                    h4 Estimate value:
                     if property.predicted_change >= 0
                         span.h4(style="color: green;") $#{property.predicted_value} (+#{property.predicted_change}%)
                     else
                         span.h4(style="color: red;") $#{property.predicted_value} (#{property.predicted_change}%)
-                .panel-body
-                    if property.szpids != null
-                        for szpid in property.szpids
-                            if szpid != "-1"
-                                a.btn.btn-primary(href='#', role='button', onclick="window.document.location='/detail?id=#{szpid}';") Similar Property
-                                    br
-                            else
-                                h1 similar not found
-                    else
-                        h1 similar not found
-        //.col.col-md-2
-  p= property.facts.length
-  p= property.facts
-  p= property.field2
-  .row
-    .col.col-md-6
-      p= property.description
-        h4 Elementary School : #{property.school_ratingE}
-        br
-        h4 Middle School : #{property.school_ratingM}
-        br
-        h4 High School : #{property.school_ratingH}
-        Legend Z-estimate:
-        p= property.zestimate
-        p= logged_in_user
+                    h4 Z-estimate:
+                        span.h4(style="color: black;") $#{property.zestimate}
+
+        .col.col-md-2
 
   .row
-      .col.col-md-6
-          table.table.table-striped
-          for each in property.field1
-            tr
-              td
-                h5= each
-    .col.col-md-6
-        table.table.table-striped
-          for each in property.field2
-            tr
-              td
-                h5= each
+    .col.col-md-10
+      table.table.table-striped.table-responsive
+        tr
+          td
+            p= property.description
+  .row
+    .col.col-md-10
+      table.table.table-striped.table-responsive
+        tr
+          td
+            h5 Elementary School: #{property.school_ratingE}
+          td
+            h5 Middle School : #{property.school_ratingM}
+          td
+            h5 High School : #{property.school_ratingH}
+  .row
+    .col.col-md-5
+      table.table.table-striped.table-responsive
+        for each in property.field1
+          tr
+            td
+              h5= each
+    .col.col-md-5
+      table.table.table-striped.table-responsive
+        for each in property.field2
+          tr
+            td
+              h5= each
+
 
 
 

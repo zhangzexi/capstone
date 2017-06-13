@@ -3,64 +3,68 @@ extends layout
 
 block content
 
+  .row
+    .col-md-1
+    .col-md-10
+      .panel.panel-info
+        .panel-heading
+          h2.panel-title Property Summary
+        .panel-body
+          p Address : #{address}
+          if ptype == "town"
+            p Type: Town House
+          else if ptype == "singlef"
+            p Type: Single Family
+          else if ptype == "condo"
+            p Type: Condo
+          else if ptype == "multif"
+            p Type: Multi Family
 
-  .panel.panel-primary
-    .panel-heading
-        h2.panel-title Property Summary
-    .panel-body
-        p Address : #{address}
-        p Property Type : #{ptype}
+    col-md-1
 
   .row
-    .col-md-6
+    .col-md-1
+    .col-md-5
         .panel.panel-info
             .panel-heading
-                h2.panel-title Current House
+                h2.panel-title Current Property
             .panel-body
-                p floor_size : #{floor_size}
-                p lot_size : #{lot_size}
-                p number of bedroom : #{bedr}
-                p number of bathroom : #{bathr}
-                label school ratings
+                p Floor Size : #{floor_size}
+                p Lot Size : #{lot_size}
+                p Number Of Bedroom : #{bedr}
+                p Number Of Bathroom : #{bathr}
                 ul.list-group
-                    li.list-group-item
-                        label Elementary:
-                            #{es}
-                    li.list-group-item
-                        label Middle:
-                            #{ms}
-                    li.list-group-item
-                        label High:
-                            #{hs}
+                    li.list-group-item Elementary School Rating: #{es}
+                    li.list-group-item Middle School Rating: #{ms}
+                    li.list-group-item High School Rating: #{hs}
 
-    .col-md-6
+
+    .col-md-5
         .panel.panel-info
             .panel-heading
-                h2.panel-title Future House
+                h2.panel-title Future Property
             .panel-body
-                p floor_size : #{new_floor_size}
-                p lot_size : #{new_lot_size}
-                p number of bedroom : #{new_bedr}
-                p number of bathroom: #{new_bathr}
-                label school ratings
+                p Floor Size : #{new_floor_size}
+                p Lot Size : #{new_lot_size}
+                p Number Of Bedroom : #{new_bedr}
+                p Number Of Bathroom: #{new_bathr}
                 ul.list-group
-                    li.list-group-item
-                        label Elementary:
-                            #{new_es}
-                    li.list-group-item
-                        label Middle:
-                            #{new_ms}
-                    li.list-group-item
-                        label High:
-                            #{new_hs}
+                    li.list-group-item Elementary School Rating: #{new_es}
+                    li.list-group-item Middle School Rating: #{new_ms}
+                    li.list-group-item High School Rating: #{new_hs}
+    .col-md-1
 
-  .panel.panel-danger
-    .panel-heading
-        h2.panel-title Estimation Summary
-    .panel-body
-        p current_estimation : $#{current_estimation}
-        p new_estimation : $#{new_estimation}
-        p changes : #{changes}%
+  .row
+    .col-md-1
+    .col-md-10
+      .panel.panel-danger
+        .panel-heading
+          h2.panel-title Estimation Summary
+        .panel-body
+          p Current Estimation : $#{current_estimation}
+          p New Estimation : $#{new_estimation}
+          p Changes : #{changes}%
+    .col-md-1
 
 
 

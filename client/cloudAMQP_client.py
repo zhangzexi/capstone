@@ -26,5 +26,5 @@ class CloudAMQPClient:
             self.channel.basic_ack(method_frame.delivery_tag)
             return body
         else:
-            print "No message returnning"
+            print "No message returning"
             return None

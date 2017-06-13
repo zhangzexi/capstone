@@ -19,7 +19,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') MyEstimate
+          a.navbar-brand(href='/') BroncosEstimator
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.nav-pills.navbar-right
@@ -37,12 +37,11 @@ html
 
             li
                 +nav_item_dropdown("#")(label="My")
-                    +nav_item("/login" , "active") Login
-                    +nav_item("/estimator") Another action
-                    +nav_item("/register") register
+                    +nav_item("/profile" , "active") Profile
+
 
     div(style='margin-top: 10%')
-      img(src='/logo.png', style='display: block; margin-left: auto; margin-right: auto ')
+      img(src='/logo1.png', style='width:500px;height:220px;display: block; margin-left: auto; margin-right: auto')
       br
       br
       br

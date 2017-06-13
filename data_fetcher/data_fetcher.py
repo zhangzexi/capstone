@@ -15,7 +15,7 @@ CLOUD_AMQP_URL = 'amqp://dginpavm:rF4k66V_6V7kH3hhzpe7epAALlukODjs@donkey.rmq.cl
 DATA_FETCHER_QUEUE_NAME = 'dataFetcherTaskQueue'
 
 # mongodb config
-PROPERTY_TABLE_NAME = 'property_zes_facts'
+PROPERTY_TABLE_NAME = 'property_zes_facts_t'
 
 FETCH_SIMILAR_PROPERTIES = True
 
@@ -59,6 +59,7 @@ def handle_message(msg):
                     time.time() - old['last_update'] < SECONDS_IN_ONE_WEEK):
                         continue
                 cloudAMQP_client.sendDataFetcherTask({'zpid': zpid})
+                print "similar property sent to mq"
         else:
             pass
 # Main thread
