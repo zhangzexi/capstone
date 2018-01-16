@@ -15,7 +15,7 @@ var options = {
 
   // Optional depending on the providers
   httpAdapter: 'https', // Default
-  apiKey: 'AIzaSyDpZGZWXqyRWeBvLjmMf5LxC3kvGE7nXMc', // for Mapquest, OpenCage, Google Premier
+  apiKey: 'AIzaSyDpZGZWXq12312jmMf5LxC3kvGE7nXMc', // for Mapquest, OpenCage, Google Premier
   formatter: null         // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
